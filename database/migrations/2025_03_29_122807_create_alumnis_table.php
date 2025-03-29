@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('alumnis', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->date('birthday')->nullable();
+            $table->string('address')->nullable();
+            $table->year('graduation_year');
             $table->timestamps();
         });
     }

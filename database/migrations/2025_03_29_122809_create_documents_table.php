@@ -12,8 +12,18 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('documents', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->id('DocumentID');
+            $table->string('DocumentName', 255);
+            $table->string('DocumentType', 50);
+            $table->string('DocumentFilePath', 500);
+            $table->string('DocumentOwner', 255);
+            $table->string('SchoolYear', 9);
+            $table->unsignedBigInteger('CreatedBy')->nullable();
+            $table->unsignedBigInteger('UpdatedBy')->nullable();
+            $table->unsignedBigInteger('DeletedBy')->nullable();
+            $table->timestamp('CreatedAt')->useCurrent();
+            $table->timestamp('UpdatedAt')->useCurrent()->useCurrentOnUpdate();
+            $table->timestamp('DeletedAt')->nullable();
         });
     }
 

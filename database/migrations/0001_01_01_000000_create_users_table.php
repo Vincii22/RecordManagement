@@ -4,21 +4,25 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
-    public function up(): void
-    {
+    public function up(): void {
         Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
-            $table->timestamps();
+            $table->id('UserID');
+            $table->string('Name', 150);
+            $table->string('Username', 100)->unique();
+            $table->string('PasswordHash', 255);
+            $table->string('ContactNo', 20)->nullable();
+            $table->string('Email', 100)->unique();
+            $table->date('Birthday');
+            $table->enum('Sex', ['Male', 'Female']);
+            $table->enum('Position', ['Teacher I', 'Teacher II', 'Teacher III', 'Teacher IV', 'Master Teacher I', 'Master Teacher II']);
+            $table->string('ImagePath', 500)->nullable();
+            $table->enum('UserType', ['Admin', 'Faculty']);
+            $table->timestamp('CreatedAt')->useCurrent();
+            $table->timestamp('UpdatedAt')->useCurrent()->useCurrentOnUpdate();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
@@ -29,7 +33,7 @@ return new class extends Migration
 
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
-            $table->foreignId('user_id')->nullable()->index();
+            $table->foreignId('UserID')->nullable()->index();
             $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();
             $table->longText('payload');
@@ -40,8 +44,7 @@ return new class extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down(): void
-    {
+    public function down(): void {
         Schema::dropIfExists('users');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
